@@ -1,5 +1,9 @@
 # Scaffold_Core 基础组件库
 
+![Pub Version (including pre-releases)](https://img.shields.io/pub/v/scaffold_core?include_prereleases)
+![GitHub](https://img.shields.io/github/license/happy-flutter/scaffold_core)
+![Pub Likes](https://img.shields.io/pub/likes/scaffold_core)
+
 ## 概述
 
 Scaffold_Core 是一个 Flutter 基础组件库，提供应用开发中常用的 **网络请求、工具类、扩展方法** 等核心能力，采用模块化设计，便于按需引入、维护和扩展。
