@@ -2,7 +2,6 @@ import 'dart:convert' show utf8;
 
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
-// ignore: depend_on_referenced_packages
 import 'package:pointycastle/asymmetric/api.dart';
 
 abstract class CryptUtil {

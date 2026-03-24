@@ -33,6 +33,7 @@ dependencies:
   # 加密
   crypto: ^3.0.7
   encrypt: ^5.0.3
+  pointycastle: ^3.9.1
 
   # svg
   flutter_svg: ^2.2.4
