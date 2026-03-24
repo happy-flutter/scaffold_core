@@ -1,46 +1,59 @@
-# Scaffold_core 基础组件库
+# Scaffold_Core 基础组件库
 
 ## 概述
 
-Scaffold_core 是一个 Flutter 基础组件库，提供应用开发中常用的 **网络请求、工具类、扩展方法** 等核心能力，采用模块化设计，便于按需引入、维护和扩展。
+Scaffold_Core 是一个 Flutter 基础组件库，提供应用开发中常用的 **网络请求、工具类、扩展方法** 等核心能力，采用模块化设计，便于按需引入、维护和扩展。
+
+## 安装
+
+在 `pubspec.yaml` 中添加依赖：
+
+```yaml
+dependencies:
+  scaffold_core: ^1.0.0
+```
+
+或者使用 Git 依赖：
+
+```yaml
+dependencies:
+  scaffold_core:
+    git:
+      url: https://github.com/happy-flutter/scaffold_core.git
+```
 
 ## 目录结构
 
 ```text
-scaffold_core/
-├── lib/                            # 核心代码目录
-│   ├── core_extensions/            # 扩展方法模块
-│   │   ├── color_extension.dart        # 颜色工具与 Color 扩展
-│   │   ├── date_time_extension.dart    # 日期时间扩展
-│   │   ├── future_extension.dart       # Future 扩展
-│   │   └── string_extension.dart       # 字符串与正则扩展
-│   ├── core_network/               # 网络请求模块
-│   │   ├── core_network.dart           # 网络客户端核心类
-│   │   ├── exception.dart              # 网络异常处理
-│   │   ├── request.dart                # 请求封装
-│   │   ├── response.dart               # 响应封装
-│   │   ├── status_codes.dart           # HTTP 状态码常量
-│   │   └── interceptors/               # 拦截器目录
-│   │       └── retry_interceptor.dart  # 重试拦截器
-│   └── core_utils/                 # 工具类模块
-│       ├── assets_picker_util.dart     # 相机拍摄与相册选择工具
-│       ├── connectivity_util.dart      # 网络连接检测与监听
-│       ├── crypt_util.dart             # 加密工具
-│       ├── image_compress_util.dart    # 图片压缩工具
-│       ├── image_util.dart             # 图片处理（加载、尺寸、缓存等）
-│       ├── info_util.dart              # 设备与应用信息
-│       ├── lifecycle_util.dart         # 应用生命周期工具
-│       ├── link_util.dart              # 外部链接与深度链接
-│       ├── loading_util.dart           # 全局加载提示
-│       ├── log_util.dart               # 日志工具
-│       ├── permission_util.dart        # 权限请求与检查
-│       ├── storage_util.dart           # 本地存储（键值对与对象）
-│       ├── throttle_util.dart          # 节流防抖工具
-│       └── video_compress_util.dart    # 视频压缩与缩略图工具
-├── pubspec.yaml                    # 依赖配置
-├── pubspec.lock                    # 依赖锁定文件
-├── LICENSE                         # 许可证
-└── README.md                       # 说明文档
+scaffold_core/lib/
+├── core_extensions/            # 扩展方法模块
+│   ├── color_extension.dart
+│   ├── date_time_extension.dart
+│   ├── future_extension.dart
+│   └── string_extension.dart
+├── core_network/               # 网络请求模块
+│   ├── core_network.dart
+│   ├── exception.dart
+│   ├── request.dart
+│   ├── response.dart
+│   ├── status_codes.dart
+│   └── interceptors/
+│       └── retry_interceptor.dart
+└── core_utils/                 # 工具类模块
+    ├── assets_picker_util.dart
+    ├── connectivity_util.dart
+    ├── crypt_util.dart
+    ├── image_compress_util.dart
+    ├── image_util.dart
+    ├── info_util.dart
+    ├── lifecycle_util.dart
+    ├── link_util.dart
+    ├── loading_util.dart
+    ├── log_util.dart
+    ├── permission_util.dart
+    ├── storage_util.dart
+    ├── throttle_util.dart
+    └── video_compress_util.dart
 ```
 
 ## 模块说明
@@ -239,3 +252,11 @@ if (phone.isMobileExact()) {
 final amount = '1234.56';
 print(amount.toMoneyFormat()); // 输出: 1,234.56
 ```
+
+## Author
+
+[happy-flutter](https://github.com/happy-flutter)
+
+## License
+
+Scaffold_Core is available under the MIT license. See the LICENSE file for more info.
