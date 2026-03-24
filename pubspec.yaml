@@ -1,14 +1,14 @@
 name: scaffold_core
 description: A core library that provides basic components for Flutter applications.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/happy-flutter/scaffold_core
 repository: https://github.com/happy-flutter/scaffold_core
 issue_tracker: https://github.com/happy-flutter/scaffold_core/issues
 license: MIT
 
 environment:
-  sdk: ">=3.11.1<4.0.0"
-  flutter: ">=3.41.4"
+  sdk: ">=3.7.0<4.0.0"
+  flutter: ">=3.29.0"
 
 dependencies:
   flutter:
