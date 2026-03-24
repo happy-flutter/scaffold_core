@@ -1,0 +1,69 @@
+name: core
+description: "基础组件库"
+version: 1.0.0
+
+environment:
+  sdk: ">=3.11.1<4.0.0"
+  flutter: ">=3.41.4"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  #网络请求
+  dio: ^5.9.2
+
+  #日志
+  talker_flutter: ^5.1.15
+  talker_dio_logger: ^5.1.15
+  talker_logger: ^5.1.15
+
+  # for value storage
+  shared_preferences: ^2.5.4
+  # for file storage
+  path_provider: ^2.1.5
+
+  # 权限
+  permission_handler: ^12.0.1
+
+  # 加密
+  crypto: ^3.0.7
+  encrypt: ^5.0.3
+
+  # svg
+  flutter_svg: ^2.2.4
+  # 网络图片
+  cached_network_image: ^3.4.1
+
+  # 包信息、设备信息
+  package_info_plus: ^9.0.0
+  device_info_plus: ^12.3.0
+
+  # 打开系统设置页面
+  app_settings: ^7.0.0
+
+  # 拉起外部导航应用
+  map_launcher: ^4.4.3
+
+  # 网络状态
+  connectivity_plus: ^7.0.0
+
+  # 跳转
+  url_launcher: ^6.3.2
+  app_links: ^7.0.0
+
+  flutter_easyloading: ^3.0.5
+
+  # 图片压缩
+  flutter_image_compress: ^2.4.0
+  # 视频压缩
+  v_video_compressor: ^2.0.0
+
+  # 拍照、相册
+  wechat_assets_picker: ^10.1.1
+  wechat_camera_picker: ^4.5.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+
+flutter:
