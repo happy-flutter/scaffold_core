@@ -1,18 +1,18 @@
-# Core 基础组件库
+# Scaffold_core 基础组件库
 
 ## 概述
 
-Core 是一个 Flutter 基础组件库，提供应用开发中常用的 **网络请求、工具类、扩展方法** 等核心能力，采用模块化设计，便于按需引入、维护和扩展。
+Scaffold_core 是一个 Flutter 基础组件库，提供应用开发中常用的 **网络请求、工具类、扩展方法** 等核心能力，采用模块化设计，便于按需引入、维护和扩展。
 
 ## 目录结构
 
 ```text
-core/
+scaffold_core/
 ├── lib/                            # 核心代码目录
 │   ├── core_extensions/            # 扩展方法模块
 │   │   ├── color_extension.dart        # 颜色工具与 Color 扩展
 │   │   ├── date_time_extension.dart    # 日期时间扩展
-│   │   ├── function_extension.dart     # 函数与 Future 扩展
+│   │   ├── future_extension.dart       # Future 扩展
 │   │   └── string_extension.dart       # 字符串与正则扩展
 │   ├── core_network/               # 网络请求模块
 │   │   ├── core_network.dart           # 网络客户端核心类
@@ -35,9 +35,11 @@ core/
 │       ├── log_util.dart               # 日志工具
 │       ├── permission_util.dart        # 权限请求与检查
 │       ├── storage_util.dart           # 本地存储（键值对与对象）
+│       ├── throttle_util.dart          # 节流防抖工具
 │       └── video_compress_util.dart    # 视频压缩与缩略图工具
 ├── pubspec.yaml                    # 依赖配置
 ├── pubspec.lock                    # 依赖锁定文件
+├── LICENSE                         # 许可证
 └── README.md                       # 说明文档
 ```
 
@@ -49,28 +51,27 @@ core/
 
 #### 文件说明
 
-- **color_extension.dart**：颜色工具与 `Color` 扩展  
-  - 随机颜色、HEX/RGB/HSL 构造与转换  
-  - 亮度、饱和度、色相调整与混色  
+- **color_extension.dart**：颜色工具与 `Color` 扩展
+  - 随机颜色、HEX/RGB/HSL 构造与转换
+  - 亮度、饱和度、色相调整与混色
   - 深色/浅色判断、反色、灰度化、透明度控制
 
-- **date_time_extension.dart**：日期时间扩展  
-  - 多种日期/时间格式化（`YYYY-MM-DD`、`HH:mm:ss`、`YYYY-MM-DD HH:mm:ss` 等）  
-  - 中文格式化（年月日、周几等）  
-  - 相对时间显示（几分钟前、几小时前、几天前等）  
-  - 今天/昨天/本周/本月/本年判断，工作日与周末判断  
+- **date_time_extension.dart**：日期时间扩展
+  - 多种日期/时间格式化（`YYYY-MM-DD`、`HH:mm:ss`、`YYYY-MM-DD HH:mm:ss` 等）
+  - 中文格式化（年月日、周几等）
+  - 相对时间显示（几分钟前、几小时前、几天前等）
+  - 今天/昨天/本周/本月/本年判断，工作日与周末判断
   - 工作日加减、年龄计算、今年已过/剩余天数等
 
-- **function_extension.dart**：函数与异步扩展  
-  - 函数级节流、指定时间节流、防抖  
+- **future_extension.dart**：Future 扩展
   - 为 `Future` 增加最小执行时长（毫秒/秒/自定义 `Duration`）
 
-- **string_extension.dart**：字符串扩展  
-  - 判空、字符统计、显示宽度计算（中英文混排）  
-  - 过滤与截断（按长度/显示宽度、安全 substring、反转、字节长度等）  
-  - 命名风格转换（camel / Pascal / snake）与单词首字母大写  
-  - 数值转换（`toDouble` / `toInt`）、金额格式化（含 CNY、USD 格式）  
-  - 常用正则校验（手机号、邮箱、身份证、URL、日期、IP、QQ、用户名等）  
+- **string_extension.dart**：字符串扩展
+  - 判空、字符统计、显示宽度计算（中英文混排）
+  - 过滤与截断（按长度/显示宽度、安全 substring、反转、字节长度等）
+  - 命名风格转换（camel / Pascal / snake）与单词首字母大写
+  - 数值转换（`toDouble` / `toInt`）、金额格式化（含 CNY、USD 格式）
+  - 常用正则校验（手机号、邮箱、身份证、URL、日期、IP、QQ、用户名等）
   - 随机字符串生成
 
 ### 2. core_network - 网络请求模块
@@ -79,29 +80,29 @@ core/
 
 #### 文件说明
 
-- **core_network.dart**：网络客户端核心类  
-  - `NetworkClient` 单例管理  
-  - 支持 GET / POST / PUT / DELETE 等常见 HTTP 方法  
-  - 支持文件上传、下载与进度回调  
+- **core_network.dart**：网络客户端核心类
+  - `NetworkClient` 单例管理
+  - 支持 GET / POST / PUT / DELETE 等常见 HTTP 方法
+  - 支持文件上传、下载与进度回调
   - 集成重试拦截器与日志能力
 
-- **exception.dart**：网络异常处理  
-  - `NetworkException` 自定义异常体系  
+- **exception.dart**：网络异常处理
+  - `NetworkException` 自定义异常体系
   - 统一封装超时、取消、连接错误、状态码异常等
 
-- **request.dart**：请求封装  
-  - `NetworkRequest` 请求构建类  
+- **request.dart**：请求封装
+  - `NetworkRequest` 请求构建类
   - 统一管理 baseUrl、路径、参数、头部、超时等配置
 
-- **response.dart**：响应封装  
-  - `NetworkResponse` 统一响应模型  
+- **response.dart**：响应封装
+  - `NetworkResponse` 统一响应模型
   - 便于上层业务做统一数据处理
 
-- **status_codes.dart**：HTTP 状态码常量  
+- **status_codes.dart**：HTTP 状态码常量
   - 收录常见 HTTP 状态码，便于语义化使用
 
-- **interceptors/retry_interceptor.dart**：重试拦截器  
-  - 支持网络请求失败时自动重试  
+- **interceptors/retry_interceptor.dart**：重试拦截器
+  - 支持网络请求失败时自动重试
   - 可配置重试次数与策略
 
 ### 3. core_utils - 工具类模块
@@ -110,66 +111,76 @@ core/
 
 #### 文件说明
 
-- **assets_picker_util.dart**：媒体选择工具  
-  - 相机拍照与录像（分辨率可选）  
+- **assets_picker_util.dart**：媒体选择工具
+  - 相机拍照与录像（分辨率可选）
   - 相册多选图片/视频，并自动修正文件扩展名
 
-- **connectivity_util.dart**：网络连接工具  
-  - 检测当前网络状态  
+- **connectivity_util.dart**：网络连接工具
+  - 检测当前网络状态
   - 监听网络变化并回调
 
-- **crypt_util.dart**：加密工具  
-  - 常用哈希/加密算法封装（具体以实现为准）
+- **crypt_util.dart**：加密工具
+  - 常用哈希/加密算法封装
 
-- **image_compress_util.dart**：图片压缩工具  
-  - 基于 `flutter_image_compress` 的尺寸、质量压缩  
+- **image_compress_util.dart**：图片压缩工具
+  - 基于 `flutter_image_compress` 的尺寸、质量压缩
   - 支持从内存、文件、资源等多种输入形式
 
-- **image_util.dart**：图片处理工具  
+- **image_util.dart**：图片处理工具
   - 图片加载、尺寸处理、缓存等（具体以实现为准）
 
-- **info_util.dart**：设备信息工具  
+- **info_util.dart**：设备信息工具
   - 获取设备信息和应用版本等
 
-- **lifecycle_util.dart**：生命周期工具  
+- **lifecycle_util.dart**：生命周期工具
   - 应用生命周期监听与处理
 
-- **link_util.dart**：链接处理工具  
+- **link_util.dart**：链接处理工具
   - 打开外部 URL、处理深度链接等
 
-- **loading_util.dart**：加载提示工具  
+- **loading_util.dart**：加载提示工具
   - 统一的全局 loading 展示与关闭
 
-- **log_util.dart**：日志工具  
-  - 基于 Talker 的日志封装  
+- **log_util.dart**：日志工具
+  - 基于 Talker 的日志封装
   - 支持不同日志级别与网络日志拦截
 
-- **permission_util.dart**：权限管理工具  
+- **permission_util.dart**：权限管理工具
   - 权限请求、检查与结果处理
 
-- **storage_util.dart**：本地存储工具  
-  - 基于 SharedPreferences 的键值存储  
+- **storage_util.dart**：本地存储工具
+  - 基于 SharedPreferences 的键值存储
   - 对象序列化/反序列化与缓存
 
-- **video_compress_util.dart**：视频压缩工具  
-  - 基于 `v_video_compressor` 的视频压缩  
+- **throttle_util.dart**：节流防抖工具
+  - 支持函数级节流、指定时间节流
+  - 支持防抖操作
+  - 支持 Future 节流防抖
+
+- **video_compress_util.dart**：视频压缩工具
+  - 基于 `v_video_compressor` 的视频压缩
   - 支持多档质量配置、进度监听与缩略图生成
 
 ## 主要依赖
 
-- **dio**：网络请求库  
-- **talker_flutter**：日志系统  
-- **shared_preferences**：本地存储  
-- **path_provider**：路径获取  
-- **permission_handler**：权限管理  
-- **crypto**：加密库  
-- **package_info_plus**：应用信息  
-- **device_info_plus**：设备信息  
-- **connectivity_plus**：网络状态  
-- **url_launcher**：URL 启动  
-- **app_links**：深度链接  
-- **wechat_assets_picker / wechat_camera_picker**：媒体选择与拍摄  
-- **flutter_image_compress**：图片压缩  
+- **dio**：网络请求库
+- **talker_flutter / talker_dio_logger / talker_logger**：日志系统
+- **shared_preferences**：本地存储
+- **path_provider**：路径获取
+- **permission_handler**：权限管理
+- **crypto / encrypt**：加密库
+- **flutter_svg**：SVG 渲染
+- **cached_network_image**：网络图片缓存
+- **package_info_plus**：应用信息
+- **device_info_plus**：设备信息
+- **app_settings**：系统设置页面打开
+- **map_launcher**：地图导航拉起
+- **connectivity_plus**：网络状态
+- **url_launcher**：URL 启动
+- **app_links**：深度链接
+- **flutter_easyloading**：加载提示
+- **wechat_assets_picker / wechat_camera_picker**：媒体选择与拍摄
+- **flutter_image_compress**：图片压缩
 - **v_video_compressor**：视频压缩
 
 ## 使用示例
