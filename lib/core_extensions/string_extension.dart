@@ -1,5 +1,6 @@
-/// 字符串工具与扩展方法集合
-/// 提供随机字符串、判空与字符统计、命名风格转换、宽度与截断处理、金额格式化等常用字符串操作能力。
+// 字符串工具与扩展方法集合
+// 提供随机字符串、判空与字符统计、命名风格转换、宽度与截断处理、金额格式化等常用字符串操作能力。
+
 import 'dart:convert';
 import 'dart:math';
 
@@ -16,15 +17,15 @@ String generateRandomString(
   final String letterChars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
   final String numberChars = containsNumbers ? '1234567890' : '';
-  final String specialChars = containsSpecialChars
-      ? '!@#\$%^&*()_+-=[]{}|;:,.<>?~'
-      : '';
+  final String specialChars =
+      containsSpecialChars ? '!@#\$%^&*()_+-=[]{}|;:,.<>?~' : '';
 
   final allChars = '$letterChars$numberChars$specialChars';
-  final randomString = List.generate(
-    length,
-    (index) => allChars[random.nextInt(allChars.length)],
-  ).join();
+  final randomString =
+      List.generate(
+        length,
+        (index) => allChars[random.nextInt(allChars.length)],
+      ).join();
 
   return randomString;
 }
@@ -125,9 +126,7 @@ extension StringExtension on String {
   /// 安全的substring，防止越界
   String safeSubstring(int start, [int? end]) {
     final actualStart = max(0, min(start, length));
-    final actualEnd = end == null
-        ? length
-        : max(actualStart, min(end, length));
+    final actualEnd = end == null ? length : max(actualStart, min(end, length));
     return substring(actualStart, actualEnd);
   }
 
@@ -136,7 +135,7 @@ extension StringExtension on String {
     int currentWidth = 0;
     int cutIndex = 0;
 
-    int _getCharWidth(int char) {
+    int getCharWidth(int char) {
       if ((char >= 0x4E00 && char <= 0x9FFF) ||
           (char >= 0x3400 && char <= 0x4DBF) ||
           (char >= 0x20000 && char <= 0x2A6DF) ||
@@ -152,7 +151,7 @@ extension StringExtension on String {
 
     for (int i = 0; i < length; i++) {
       final char = codeUnitAt(i);
-      final charWidth = _getCharWidth(char);
+      final charWidth = getCharWidth(char);
 
       if (currentWidth + charWidth > maxWidth) {
         break;
@@ -170,7 +169,7 @@ extension StringExtension on String {
         // 需要进一步缩减来容纳省略号
         while (cutIndex > 0 && currentWidth + ellipsisWidth > maxWidth) {
           cutIndex--;
-          currentWidth -= _getCharWidth(codeUnitAt(cutIndex));
+          currentWidth -= getCharWidth(codeUnitAt(cutIndex));
         }
         return substring(0, cutIndex) + ellipsis;
       }
@@ -290,7 +289,7 @@ extension StringExtension on String {
     String intPart = parts[0];
     String decimalPart = parts.length > 1 ? parts[1] : '';
 
-    String _addThousandSeparator(String intPart, String separator) {
+    String addThousandSeparator(String intPart, String separator) {
       if (intPart.length <= 3) return intPart;
 
       String result = '';
@@ -309,7 +308,7 @@ extension StringExtension on String {
     }
 
     // 添加千分位分隔符
-    String formattedIntPart = _addThousandSeparator(intPart, thousandSeparator);
+    String formattedIntPart = addThousandSeparator(intPart, thousandSeparator);
 
     // 组合结果
     String result = formattedIntPart;

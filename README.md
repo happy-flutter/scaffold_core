@@ -1,23 +1,25 @@
-# Scaffold_Core 基础组件库
+# Scaffold_Core - Flutter Core Components Library
 
 ![Pub Version (including pre-releases)](https://img.shields.io/pub/v/scaffold_core?include_prereleases)
 ![GitHub](https://img.shields.io/github/license/happy-flutter/scaffold_core)
 ![Pub Likes](https://img.shields.io/pub/likes/scaffold_core)
 
-## 概述
+[中文文档](README_zh.md)
 
-Scaffold_Core 是一个 Flutter 基础组件库，提供应用开发中常用的 **网络请求、工具类、扩展方法** 等核心能力，采用模块化设计，便于按需引入、维护和扩展。
+## Overview
 
-## 安装
+Scaffold_Core is a foundational Flutter components library that provides core capabilities commonly used in application development, including **network requests, utilities, and extension methods**. It adopts a modular design that facilitates on-demand import, maintenance, and extension.
 
-在 `pubspec.yaml` 中添加依赖：
+## Installation
+
+Add the dependency to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
   scaffold_core: ^1.0.0
 ```
 
-或者使用 Git 依赖：
+Or use Git dependency:
 
 ```yaml
 dependencies:
@@ -26,16 +28,16 @@ dependencies:
       url: https://github.com/happy-flutter/scaffold_core.git
 ```
 
-## 目录结构
+## Project Structure
 
 ```text
 scaffold_core/lib/
-├── core_extensions/            # 扩展方法模块
+├── core_extensions/            # Extension methods module
 │   ├── color_extension.dart
 │   ├── date_time_extension.dart
 │   ├── future_extension.dart
 │   └── string_extension.dart
-├── core_network/               # 网络请求模块
+├── core_network/               # Network request module
 │   ├── core_network.dart
 │   ├── exception.dart
 │   ├── request.dart
@@ -43,7 +45,7 @@ scaffold_core/lib/
 │   ├── status_codes.dart
 │   └── interceptors/
 │       └── retry_interceptor.dart
-└── core_utils/                 # 工具类模块
+└── core_utils/                 # Utilities module
     ├── assets_picker_util.dart
     ├── connectivity_util.dart
     ├── crypt_util.dart
@@ -60,158 +62,158 @@ scaffold_core/lib/
     └── video_compress_util.dart
 ```
 
-## 模块说明
+## Module Description
 
-### 1. core_extensions - 扩展方法模块
+### 1. core_extensions - Extension Methods Module
 
-为常用数据类型提供扩展方法，增强原有类型的可读性与便捷性。
+Provides extension methods for commonly used data types, enhancing the readability and convenience of original types.
 
-#### 文件说明
+#### File Description
 
-- **color_extension.dart**：颜色工具与 `Color` 扩展
-  - 随机颜色、HEX/RGB/HSL 构造与转换
-  - 亮度、饱和度、色相调整与混色
-  - 深色/浅色判断、反色、灰度化、透明度控制
+- **color_extension.dart**: Color utilities and `Color` extensions
+  - Random color, HEX/RGB/HSL construction and conversion
+  - Brightness, saturation, hue adjustment and color mixing
+  - Dark/light detection, inverse color, grayscale, transparency control
 
-- **date_time_extension.dart**：日期时间扩展
-  - 多种日期/时间格式化（`YYYY-MM-DD`、`HH:mm:ss`、`YYYY-MM-DD HH:mm:ss` 等）
-  - 中文格式化（年月日、周几等）
-  - 相对时间显示（几分钟前、几小时前、几天前等）
-  - 今天/昨天/本周/本月/本年判断，工作日与周末判断
-  - 工作日加减、年龄计算、今年已过/剩余天数等
+- **date_time_extension.dart**: DateTime extensions
+  - Multiple date/time formatting (`YYYY-MM-DD`, `HH:mm:ss`, `YYYY-MM-DD HH:mm:ss`, etc.)
+  - Chinese formatting (year-month-day, weekday, etc.)
+  - Relative time display (minutes ago, hours ago, days ago, etc.)
+  - Today/Yesterday/This week/This month/This year detection, weekday and weekend detection
+  - Workday addition/subtraction, age calculation, days passed/remaining in the current year, etc.
 
-- **future_extension.dart**：Future 扩展
-  - 为 `Future` 增加最小执行时长（毫秒/秒/自定义 `Duration`）
+- **future_extension.dart**: Future extensions
+  - Adds minimum execution duration to `Future` (milliseconds/seconds/custom `Duration`)
 
-- **string_extension.dart**：字符串扩展
-  - 判空、字符统计、显示宽度计算（中英文混排）
-  - 过滤与截断（按长度/显示宽度、安全 substring、反转、字节长度等）
-  - 命名风格转换（camel / Pascal / snake）与单词首字母大写
-  - 数值转换（`toDouble` / `toInt`）、金额格式化（含 CNY、USD 格式）
-  - 常用正则校验（手机号、邮箱、身份证、URL、日期、IP、QQ、用户名等）
-  - 随机字符串生成
+- **string_extension.dart**: String extensions
+  - Empty check, character count, display width calculation (mixed Chinese and English)
+  - Filtering and truncation (by length/display width, safe substring, reverse, byte length, etc.)
+  - Naming style conversion (camel / Pascal / snake) and capitalize first word
+  - Numeric conversion (`toDouble` / `toInt`), amount formatting (CNY, USD formats included)
+  - Common regex validation (phone number, email, ID card, URL, date, IP, QQ, username, etc.)
+  - Random string generation
 
-### 2. core_network - 网络请求模块
+### 2. core_network - Network Request Module
 
-基于 Dio 封装的网络请求框架，提供统一、可配置的网络访问能力。
+A network request framework encapsulated based on Dio, providing unified and configurable network access capabilities.
 
-#### 文件说明
+#### File Description
 
-- **core_network.dart**：网络客户端核心类
-  - `NetworkClient` 单例管理
-  - 支持 GET / POST / PUT / DELETE 等常见 HTTP 方法
-  - 支持文件上传、下载与进度回调
-  - 集成重试拦截器与日志能力
+- **core_network.dart**: Network client core class
+  - `NetworkClient` singleton management
+  - Supports common HTTP methods such as GET / POST / PUT / DELETE
+  - Supports file upload, download and progress callbacks
+  - Integrated retry interceptor and logging capabilities
 
-- **exception.dart**：网络异常处理
-  - `NetworkException` 自定义异常体系
-  - 统一封装超时、取消、连接错误、状态码异常等
+- **exception.dart**: Network exception handling
+  - `NetworkException` custom exception system
+  - Unified encapsulation of timeout, cancellation, connection errors, status code exceptions, etc.
 
-- **request.dart**：请求封装
-  - `NetworkRequest` 请求构建类
-  - 统一管理 baseUrl、路径、参数、头部、超时等配置
+- **request.dart**: Request encapsulation
+  - `NetworkRequest` request builder class
+  - Unified management of baseUrl, path, parameters, headers, timeout and other configurations
 
-- **response.dart**：响应封装
-  - `NetworkResponse` 统一响应模型
-  - 便于上层业务做统一数据处理
+- **response.dart**: Response encapsulation
+  - `NetworkResponse` unified response model
+  - Convenient for upper-layer business to do unified data processing
 
-- **status_codes.dart**：HTTP 状态码常量
-  - 收录常见 HTTP 状态码，便于语义化使用
+- **status_codes.dart**: HTTP status code constants
+  - Includes common HTTP status codes for semantic usage
 
-- **interceptors/retry_interceptor.dart**：重试拦截器
-  - 支持网络请求失败时自动重试
-  - 可配置重试次数与策略
+- **interceptors/retry_interceptor.dart**: Retry interceptor
+  - Supports automatic retry when network request fails
+  - Configurable retry count and strategy
 
-### 3. core_utils - 工具类模块
+### 3. core_utils - Utilities Module
 
-封装常见业务无关的通用工具，方便在不同项目中复用。
+Encapsulates common business-agnostic general utilities for easy reuse across different projects.
 
-#### 文件说明
+#### File Description
 
-- **assets_picker_util.dart**：媒体选择工具
-  - 相机拍照与录像（分辨率可选）
-  - 相册多选图片/视频，并自动修正文件扩展名
+- **assets_picker_util.dart**: Media picker utilities
+  - Camera photo and video capture (resolution optional)
+  - Multiple image/video selection from gallery, automatically corrects file extensions
 
-- **connectivity_util.dart**：网络连接工具
-  - 检测当前网络状态
-  - 监听网络变化并回调
+- **connectivity_util.dart**: Network connectivity utilities
+  - Detects current network status
+  - Listens for network changes with callbacks
 
-- **crypt_util.dart**：加密工具
-  - 常用哈希/加密算法封装
+- **crypt_util.dart**: Encryption utilities
+  - Common hashing/encryption algorithm encapsulation
 
-- **image_compress_util.dart**：图片压缩工具
-  - 基于 `flutter_image_compress` 的尺寸、质量压缩
-  - 支持从内存、文件、资源等多种输入形式
+- **image_compress_util.dart**: Image compression utilities
+  - Size and quality compression based on `flutter_image_compress`
+  - Supports multiple input forms from memory, file, resources, etc.
 
-- **image_util.dart**：图片处理工具
-  - 图片加载、尺寸处理、缓存等（具体以实现为准）
+- **image_util.dart**: Image processing utilities
+  - Image loading, size processing, caching, etc. (subject to implementation)
 
-- **info_util.dart**：设备信息工具
-  - 获取设备信息和应用版本等
+- **info_util.dart**: Device info utilities
+  - Get device information and application version, etc.
 
-- **lifecycle_util.dart**：生命周期工具
-  - 应用生命周期监听与处理
+- **lifecycle_util.dart**: Lifecycle utilities
+  - Application lifecycle listening and handling
 
-- **link_util.dart**：链接处理工具
-  - 打开外部 URL、处理深度链接等
+- **link_util.dart**: Link handling utilities
+  - Open external URLs, handle deep links, etc.
 
-- **loading_util.dart**：加载提示工具
-  - 统一的全局 loading 展示与关闭
+- **loading_util.dart**: Loading indicator utilities
+  - Unified global loading display and dismissal
 
-- **log_util.dart**：日志工具
-  - 基于 Talker 的日志封装
-  - 支持不同日志级别与网络日志拦截
+- **log_util.dart**: Logging utilities
+  - Log encapsulation based on Talker
+  - Supports different log levels and network log interception
 
-- **permission_util.dart**：权限管理工具
-  - 权限请求、检查与结果处理
+- **permission_util.dart**: Permission management utilities
+  - Permission request, checking and result handling
 
-- **storage_util.dart**：本地存储工具
-  - 基于 SharedPreferences 的键值存储
-  - 对象序列化/反序列化与缓存
+- **storage_util.dart**: Local storage utilities
+  - Key-value storage based on SharedPreferences
+  - Object serialization/deserialization and caching
 
-- **throttle_util.dart**：节流防抖工具
-  - 支持函数级节流、指定时间节流
-  - 支持防抖操作
-  - 支持 Future 节流防抖
+- **throttle_util.dart**: Throttle and debounce utilities
+  - Supports function-level throttling, specified time throttling
+  - Supports debounce operations
+  - Supports Future throttle and debounce
 
-- **video_compress_util.dart**：视频压缩工具
-  - 基于 `v_video_compressor` 的视频压缩
-  - 支持多档质量配置、进度监听与缩略图生成
+- **video_compress_util.dart**: Video compression utilities
+  - Video compression based on `v_video_compressor`
+  - Supports multi-level quality configuration, progress listening and thumbnail generation
 
-## 主要依赖
+## Main Dependencies
 
-- **dio**：网络请求库
-- **talker_flutter / talker_dio_logger / talker_logger**：日志系统
-- **shared_preferences**：本地存储
-- **path_provider**：路径获取
-- **permission_handler**：权限管理
-- **crypto / encrypt**：加密库
-- **flutter_svg**：SVG 渲染
-- **cached_network_image**：网络图片缓存
-- **package_info_plus**：应用信息
-- **device_info_plus**：设备信息
-- **app_settings**：系统设置页面打开
-- **map_launcher**：地图导航拉起
-- **connectivity_plus**：网络状态
-- **url_launcher**：URL 启动
-- **app_links**：深度链接
-- **flutter_easyloading**：加载提示
-- **wechat_assets_picker / wechat_camera_picker**：媒体选择与拍摄
-- **flutter_image_compress**：图片压缩
-- **v_video_compressor**：视频压缩
+- **dio**: Network request library
+- **talker_flutter / talker_dio_logger / talker_logger**: Logging system
+- **shared_preferences**: Local storage
+- **path_provider**: Path retrieval
+- **permission_handler**: Permission management
+- **crypto / encrypt**: Encryption library
+- **flutter_svg**: SVG rendering
+- **cached_network_image**: Network image caching
+- **package_info_plus**: Application information
+- **device_info_plus**: Device information
+- **app_settings**: Open system settings page
+- **map_launcher**: Launch map navigation
+- **connectivity_plus**: Network status
+- **url_launcher**: URL launcher
+- **app_links**: Deep links
+- **flutter_easyloading**: Loading indicator
+- **wechat_assets_picker / wechat_camera_picker**: Media picking and capturing
+- **flutter_image_compress**: Image compression
+- **v_video_compressor**: Video compression
 
-## 使用示例
+## Usage Examples
 
-### 网络请求
+### Network Request
 
 ```dart
-// 初始化网络客户端
+// Initialize network client
 NetworkClient.init(
   baseUrl: 'https://api.example.com',
   connectTimeout: const Duration(seconds: 30),
 );
 
-// 发起请求
+// Make a request
 final response = await NetworkClient().fetch(
   NetworkRequest(
     apiPath: '/users',
@@ -220,41 +222,41 @@ final response = await NetworkClient().fetch(
 );
 ```
 
-### 存储操作
+### Storage Operations
 
 ```dart
-// 初始化存储
+// Initialize storage
 await StorageUtil.init();
 
-// 存储数据
+// Save data
 await StorageUtil.setValue('key', 'value');
 await StorageUtil.setObject('user', {'name': 'John'});
 
-// 读取数据
+// Read data
 final value = StorageUtil.getValue('key');
 final user = StorageUtil.getObject('user');
 ```
 
-### 日志记录
+### Logging
 
 ```dart
-// 记录日志
-LogUtil.info('这是一条信息日志');
-LogUtil.error('这是一条错误日志');
-LogUtil.debug('这是一条调试日志');
+// Log messages
+LogUtil.info('This is an info log');
+LogUtil.error('This is an error log');
+LogUtil.debug('This is a debug log');
 ```
 
-### 字符串扩展
+### String Extensions
 
 ```dart
-// 使用字符串扩展
+// Using string extensions
 final phone = '13800138000';
 if (phone.isMobileExact()) {
-  print('有效的手机号');
+  print('Valid phone number');
 }
 
 final amount = '1234.56';
-print(amount.toMoneyFormat()); // 输出: 1,234.56
+print(amount.toMoneyFormat()); // Output: 1,234.56
 ```
 
 ## Author

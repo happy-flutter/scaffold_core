@@ -1,7 +1,7 @@
 import 'dart:convert' show utf8;
 
 import 'package:crypto/crypto.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:encrypt_next/encrypt.dart' as encrypt;
 import 'package:pointycastle/asymmetric/api.dart';
 
 abstract class CryptUtil {
@@ -34,8 +34,10 @@ abstract class CryptUtil {
   static String rsaEncrypt(String content, String publicKeyStr) {
     final parser = encrypt.RSAKeyParser();
     String publicKeyString = _transformPem(publicKeyStr);
-    RSAPublicKey publicKey = parser.parse(publicKeyString) as RSAPublicKey;
-    final encryptor = encrypt.Encrypter(encrypt.RSA(publicKey: publicKey));
+    RSAAsymmetricKey publicKey = parser.parse(publicKeyString);
+    final encryptor = encrypt.Encrypter(
+      encrypt.RSA(publicKey: publicKey as RSAPublicKey),
+    );
     final encrypted = encryptor.encrypt(content);
     return encrypted.base64;
   }
@@ -57,12 +59,12 @@ abstract class CryptUtil {
   /// [str]秘钥，字符串
   /// [isPublic]是否是公钥
   static String _transformPem(String str, {bool isPublic = true}) {
-    var begin = isPublic
-        ? '-----BEGIN PUBLIC KEY-----\n'
-        : "-----BEGIN PRIVATE KEY-----\n";
-    var end = isPublic
-        ? '\n-----END PUBLIC KEY-----'
-        : '\n-----END PRIVATE KEY-----';
+    var begin =
+        isPublic
+            ? '-----BEGIN PUBLIC KEY-----\n'
+            : "-----BEGIN PRIVATE KEY-----\n";
+    var end =
+        isPublic ? '\n-----END PUBLIC KEY-----' : '\n-----END PRIVATE KEY-----';
     // 如果已经是PEM格式的秘钥，直接返回
     if (str.contains(begin) && str.contains(end)) return str;
     // 去掉空格和换行
@@ -114,12 +116,13 @@ extension CryptUtilExtension on String {
     bool hasDigits = contains(RegExp(r'[0-9]'));
     bool hasSpecial = contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
 
-    int criteriaCount = [
-      hasUpper,
-      hasLower,
-      hasDigits,
-      hasSpecial,
-    ].where((criteria) => criteria).length;
+    int criteriaCount =
+        [
+          hasUpper,
+          hasLower,
+          hasDigits,
+          hasSpecial,
+        ].where((criteria) => criteria).length;
 
     if (length >= 12 && criteriaCount >= 3) return PasswordStrength.strong;
     if (length >= 8 && criteriaCount >= 2) return PasswordStrength.medium;

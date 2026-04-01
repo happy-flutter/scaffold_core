@@ -1,5 +1,6 @@
-/// 颜色工具与扩展方法集合
-/// 提供随机颜色、十六进制/RGB/HSL 构造与转换，以及对 `Color` 的亮度、饱和度、色相、混色与灰度等便捷操作。
+// 颜色工具与扩展方法集合
+// 提供随机颜色、十六进制/RGB/HSL 构造与转换，以及对 `Color` 的亮度、饱和度、色相、混色与灰度等便捷操作。
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';

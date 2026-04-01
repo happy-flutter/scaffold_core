@@ -32,8 +32,8 @@ dependencies:
 
   # 加密
   crypto: ^3.0.7
-  encrypt: ^5.0.3
-  pointycastle: ^3.9.1
+  encrypt_next: ^5.0.5
+  pointycastle: ^4.0.0
 
   # svg
   flutter_svg: ^2.2.4
@@ -41,17 +41,17 @@ dependencies:
   cached_network_image: ^3.4.1
 
   # 包信息、设备信息
-  package_info_plus: ^9.0.0
-  device_info_plus: ^12.3.0
+  package_info_plus: ^9.0.1
+  device_info_plus: ^12.4.0
 
   # 打开系统设置页面
   app_settings: ^7.0.0
 
   # 拉起外部导航应用
-  map_launcher: ^4.4.3
+  map_launcher: ^4.5.0
 
   # 网络状态
-  connectivity_plus: ^7.0.0
+  connectivity_plus: ^7.1.0
 
   # 跳转
   url_launcher: ^6.3.2

@@ -1,4 +1,6 @@
-/// 函数与异步工具扩展集合
+// Future 常用扩展
+// 提供确保 Future 至少执行指定时间、超时处理、错误捕获、延迟执行等常用操作。
+
 import 'dart:async';
 
 /// Future 常用扩展
@@ -33,7 +35,7 @@ extension FutureMinDuration<T> on Future<T> {
 
   /// 错误捕获，返回默认值
   Future<T> catchErrorReturn(T defaultValue) {
-    return this.catchError((error) => defaultValue);
+    return catchError((error) => defaultValue);
   }
 
   /// 延迟执行

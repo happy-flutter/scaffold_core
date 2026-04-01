@@ -44,6 +44,8 @@ enum ConnectivityStatus {
         return ConnectivityStatus.other;
       case ConnectivityResult.none:
         return ConnectivityStatus.none;
+      default:
+        return ConnectivityStatus.none;
     }
   }
 }
@@ -76,8 +78,8 @@ class ConnectivityUtil {
 
   /// 检查网络状态
   static Future<ConnectivityStatus> checkConnectivity() async {
-    final List<ConnectivityResult> connectivityResult = await Connectivity()
-        .checkConnectivity();
+    final List<ConnectivityResult> connectivityResult =
+        await Connectivity().checkConnectivity();
 
     return _statusFormConnectivityResult(connectivityResult);
   }
