@@ -11,9 +11,12 @@ abstract class StorageUtil {
 
   static SharedPreferences? _innerInstance;
 
-  static SharedPreferences get _storageInstance => _innerInstance == null
-      ? throw Exception('storageInstance can not be null,pls call init() first')
-      : _innerInstance!;
+  static SharedPreferences get _storageInstance =>
+      _innerInstance == null
+          ? throw Exception(
+            'storageInstance can not be null,pls call init() first',
+          )
+          : _innerInstance!;
 
   /// 初始化
   ///
@@ -119,9 +122,8 @@ abstract class StorageUtil {
       if (kDebugMode) {
         debugPrint('获取文档目录失败: $e');
       }
-    } finally {
-      return path;
     }
+    return path;
   }
 
   /// 临时目录
@@ -134,9 +136,8 @@ abstract class StorageUtil {
       if (kDebugMode) {
         debugPrint('获取临时目录失败: $e');
       }
-    } finally {
-      return path;
     }
+    return path;
   }
 
   /// 缓存目录
@@ -149,9 +150,8 @@ abstract class StorageUtil {
       if (kDebugMode) {
         debugPrint('获取缓存目录失败: $e');
       }
-    } finally {
-      return path;
-    }
+    } finally {}
+    return path;
   }
 
   /// 缓存总大小
@@ -224,16 +224,17 @@ abstract class StorageUtil {
       }
 
       // 并发删除所有文件和目录
-      final List<Future<void>> deleteTasks = entities.map((entity) async {
-        try {
-          await entity.delete(recursive: true);
-        } catch (e) {
-          // 单个文件删除失败不应该影响整体清理
-          if (kDebugMode) {
-            debugPrint('删除文件失败: ${entity.path}, 错误: $e');
-          }
-        }
-      }).toList();
+      final List<Future<void>> deleteTasks =
+          entities.map((entity) async {
+            try {
+              await entity.delete(recursive: true);
+            } catch (e) {
+              // 单个文件删除失败不应该影响整体清理
+              if (kDebugMode) {
+                debugPrint('删除文件失败: ${entity.path}, 错误: $e');
+              }
+            }
+          }).toList();
 
       await Future.wait(deleteTasks);
 

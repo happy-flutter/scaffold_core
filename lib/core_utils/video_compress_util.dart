@@ -269,7 +269,7 @@ class VideoCompressUtil {
 
   /// Simple progress callback
   static void listenToProgress(
-    onProgress, {
+    void Function(double progress) onProgress, {
     Function? onError,
     void Function()? onDone,
     bool? cancelOnError,

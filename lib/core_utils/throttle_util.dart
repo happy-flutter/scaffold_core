@@ -11,11 +11,11 @@ class ThrottleUtil {
   static ThrottleUtil get instance => _instance;
 
   /// 全局缓存
-  final Map<String, _ThrottleData<dynamic>> _throttleCache = {};
-  Map<String, _ThrottleData<dynamic>> get throttleCache => _throttleCache;
+  final Map<String, ThrottleData<dynamic>> _throttleCache = {};
+  Map<String, ThrottleData<dynamic>> get throttleCache => _throttleCache;
 
-  final Map<String, _DebounceData> _debounceCache = {};
-  Map<String, _DebounceData> get debounceCache => _debounceCache;
+  final Map<String, DebounceData> _debounceCache = {};
+  Map<String, DebounceData> get debounceCache => _debounceCache;
 
   Timer? _cleanupTimer;
 
@@ -67,13 +67,13 @@ class ThrottleUtil {
 }
 
 /// 节流数据
-class _ThrottleData<T> {
+class ThrottleData<T> {
   final DateTime lastCall;
   final Future<T>? completedFuture;
   final Future<T>? pendingFuture;
   final Completer<T>? pendingCompleter;
 
-  _ThrottleData({
+  ThrottleData({
     required this.lastCall,
     this.completedFuture,
     this.pendingFuture,
@@ -82,11 +82,11 @@ class _ThrottleData<T> {
 }
 
 /// 防抖数据
-class _DebounceData {
+class DebounceData {
   final DateTime lastCall;
   final Timer? timer;
 
-  _DebounceData({required this.lastCall, this.timer});
+  DebounceData({required this.lastCall, this.timer});
 }
 
 class _FunctionProxy {
@@ -107,7 +107,7 @@ class _FunctionProxy {
     if (ThrottleUtil.instance.throttleCache[key] != null) {
       return;
     }
-    ThrottleUtil.instance.throttleCache[key] = _ThrottleData<dynamic>(
+    ThrottleUtil.instance.throttleCache[key] = ThrottleData<dynamic>(
       lastCall: DateTime.now(),
     );
     try {
@@ -130,7 +130,7 @@ class _FunctionProxy {
     if (cached != null && now.difference(cached.lastCall) < timeout) {
       return;
     }
-    ThrottleUtil.instance.throttleCache[key] = _ThrottleData<dynamic>(
+    ThrottleUtil.instance.throttleCache[key] = ThrottleData<dynamic>(
       lastCall: now,
     );
     target?.call();
@@ -144,14 +144,14 @@ class _FunctionProxy {
   void debounce() {
     String key = target.hashCode.toString();
     final now = DateTime.now();
-    _DebounceData? data = ThrottleUtil.instance.debounceCache[key];
+    DebounceData? data = ThrottleUtil.instance.debounceCache[key];
     data?.timer?.cancel();
 
     final timer = Timer(timeout, () {
       ThrottleUtil.instance.debounceCache.remove(key);
       target?.call();
     });
-    ThrottleUtil.instance.debounceCache[key] = _DebounceData(
+    ThrottleUtil.instance.debounceCache[key] = DebounceData(
       lastCall: now,
       timer: timer,
     );
@@ -176,10 +176,10 @@ extension FunctionExt on Function {
   }) {
     late final String key;
     if (positionalArgs.isEmpty && namedArgs.isEmpty) {
-      key = this.hashCode.toString();
+      key = hashCode.toString();
     } else {
       final keyBuffer = StringBuffer();
-      keyBuffer.write(this.hashCode);
+      keyBuffer.write(hashCode);
       for (final arg in positionalArgs) {
         keyBuffer.write('_');
         keyBuffer.write(arg.hashCode);
@@ -211,7 +211,7 @@ extension FunctionExt on Function {
     future
         .then((value) {
           if (!completer.isCompleted) completer.complete(value);
-          ThrottleUtil.instance.throttleCache[key] = _ThrottleData<T>(
+          ThrottleUtil.instance.throttleCache[key] = ThrottleData<T>(
             lastCall: now,
             completedFuture: Future.value(value),
             pendingFuture: null,
@@ -225,7 +225,7 @@ extension FunctionExt on Function {
           throw error;
         });
 
-    ThrottleUtil.instance.throttleCache[key] = _ThrottleData<T>(
+    ThrottleUtil.instance.throttleCache[key] = ThrottleData<T>(
       lastCall: now,
       completedFuture: null,
       pendingFuture: future,
@@ -244,10 +244,10 @@ extension FunctionExt on Function {
   }) {
     late final String key;
     if (positionalArgs.isEmpty && namedArgs.isEmpty) {
-      key = this.hashCode.toString();
+      key = hashCode.toString();
     } else {
       final keyBuffer = StringBuffer();
-      keyBuffer.write(this.hashCode);
+      keyBuffer.write(hashCode);
       for (final arg in positionalArgs) {
         keyBuffer.write('_');
         keyBuffer.write(arg.hashCode);
@@ -262,7 +262,7 @@ extension FunctionExt on Function {
     }
     final now = DateTime.now();
 
-    _DebounceData? data = ThrottleUtil.instance.debounceCache[key];
+    DebounceData? data = ThrottleUtil.instance.debounceCache[key];
     data?.timer?.cancel();
 
     final completer = Completer<T?>();
@@ -281,7 +281,7 @@ extension FunctionExt on Function {
           });
     });
 
-    ThrottleUtil.instance.debounceCache[key] = _DebounceData(
+    ThrottleUtil.instance.debounceCache[key] = DebounceData(
       lastCall: now,
       timer: timer,
     );

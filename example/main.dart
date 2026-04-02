@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:scaffold_core/core_utils/crypt_util.dart';
 
 void main() {
