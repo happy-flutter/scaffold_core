@@ -1,25 +1,40 @@
-# Change Log
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
 
 ---
 
-## [**v1.0.2**](https://github.com/happy-flutter/scaffold_core/releases/tag/v1.0.2)
+## [1.0.2] - 2026-04-02
 
-- Feat: Add core functionality and documentation for basic component library
-- Feat: Add core files for scaffold_core basic component library
-- Update: Update dependencies to latest stable versions
-- Docs: Add Chinese and English README documentation
-- Feat: Add platform declaration for all platforms (Android, iOS, Web, macOS, Windows, Linux)
-- Fix: Fix default return value in connectivity utility
-- Optimize: Optimize code format and comment style
+### Added
 
----
+- 基础组件库核心功能
+- scaffold_core 核心文件
+- 全平台声明 (Android, iOS, Web, macOS, Windows, Linux)
+- 中英文 README 文档
 
-## [**v1.0.1**](https://github.com/happy-flutter/scaffold_core/releases/tag/v1.0.1)
+### Changed
 
-- Fix: Compatible with Flutter 3.29.0
+- 更新依赖版本至最新稳定版
+- 优化代码格式与注释风格
 
----
+### Fixed
 
-## [**v1.0.0**](https://github.com/happy-flutter/scaffold_core/releases/tag/v1.0.0)
+- 修复网络连接工具中的默认返回值
 
-    First Release
+## [1.0.1] - 2026-04-01
+
+### Fixed
+
+- 兼容 Flutter 3.29.0
+
+## [1.0.0] - 2026-04-01
+
+### Added
+
+- 首个正式版本发布
