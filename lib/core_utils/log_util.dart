@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
 import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
@@ -26,7 +27,14 @@ abstract class LogUtil {
 
   static Talker _init() {
     final logger = TalkerLogger(formatter: _CustomColoredLoggerFormatter());
-    final talker = TalkerFlutter.init(logger: logger);
+    final talker = TalkerFlutter.init(
+      logger: logger,
+      settings: TalkerSettings(
+        enabled: true, // 全局开启，确保后续功能可用
+        useConsoleLogs: !kReleaseMode, // 在 Release 模式下关闭控制台输出
+        useHistory: !kReleaseMode, // 在 Release 模式下关闭内存日志记录
+      ),
+    );
     return talker;
   }
 
@@ -77,7 +85,7 @@ abstract class LogUtil {
     );
   }
 
-  static TalkerDioLogger get talkerDioLogger => TalkerDioLogger(
+  static TalkerDioLogger get talkerDioLoggerInterceptor => TalkerDioLogger(
     talker: talker,
     settings: const TalkerDioLoggerSettings(
       printRequestHeaders: true,

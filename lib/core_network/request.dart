@@ -63,16 +63,30 @@ class NetworkRequest {
     RequestOptions options, {
     bool clearHeaders = true,
   }) {
+    RequestOptions retryOptions = options;
+
+    // FormData 需要重建
+    if (options.data is FormData) {
+      final originalFormData = options.data as FormData;
+      final newFormData = FormData();
+      for (final field in originalFormData.fields) {
+        newFormData.fields.add(MapEntry(field.key, field.value));
+      }
+      for (final file in originalFormData.files) {
+        newFormData.files.add(MapEntry(file.key, file.value));
+      }
+      retryOptions = options.copyWith(data: newFormData);
+    }
     return NetworkRequest(
-      options.path,
+      retryOptions.path,
       method: NetworkRequestMethod.values.firstWhere(
-        (e) => e.name == options.method,
+        (e) => e.name == retryOptions.method,
       ),
-      queryParams: options.queryParameters,
-      data: options.data,
-      headers: clearHeaders ? {} : options.headers,
-      extra: options.extra,
-      cancelToken: options.cancelToken as Cancelabel?,
+      queryParams: retryOptions.queryParameters,
+      data: retryOptions.data,
+      headers: clearHeaders ? {} : retryOptions.headers,
+      extra: retryOptions.extra,
+      cancelToken: retryOptions.cancelToken as Cancelabel?,
     );
   }
 }

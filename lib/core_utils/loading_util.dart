@@ -26,7 +26,7 @@ abstract class LoadingUtil {
     Color indicatorColor = Colors.yellow,
     Color textColor = Colors.yellow,
     Color maskColor = Colors.black54,
-    bool userInteractions = true,
+    bool userInteractions = false,
     bool dismissOnTap = false,
     EasyLoadingMaskType maskType = EasyLoadingMaskType.clear,
     EasyLoadingAnimation? customAnimation,

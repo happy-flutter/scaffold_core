@@ -124,23 +124,17 @@ class NetworkClient {
   }
 
   /// 使用无配置的dio发送请求
-  Future<NetworkResponse> fetchWithCleanDio<T>(NetworkRequest req) async {
-    try {
-      Response response = await dio.request(
-        req.apiPath,
-        data: req.data,
-        queryParameters: req.queryParams,
-        cancelToken: req.cancelToken,
-        options: req.optiopns,
-        onSendProgress: req.onSendProgress,
-        onReceiveProgress: req.onReceiveProgress,
-      );
+  Future<Response> retry<T>(RequestOptions options) async {
+    NetworkRequest req = NetworkRequest.fromRequestOptions(options);
 
-      return NetworkResponse.fromResponse(response);
-    } on DioException catch (e) {
-      throw NetworkException.fromDioException(e);
-    } on Error catch (e) {
-      throw NetworkException.fromError(e);
-    }
+    return await dio.request(
+      req.apiPath,
+      data: req.data,
+      queryParameters: req.queryParams,
+      cancelToken: req.cancelToken,
+      options: req.optiopns,
+      onSendProgress: req.onSendProgress,
+      onReceiveProgress: req.onReceiveProgress,
+    );
   }
 }

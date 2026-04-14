@@ -6,9 +6,17 @@ import 'package:flutter/foundation.dart';
 class ThrottleUtil {
   static final ThrottleUtil _instance = ThrottleUtil._internal();
   factory ThrottleUtil() => _instance;
-  ThrottleUtil._internal();
+  ThrottleUtil._internal() {
+    if (_cleanupTimer == null)
+      _cleanupTimer = Timer.periodic(cleanupInterval, (_) {
+        _cleanupExpired();
+      });
+  }
 
   static ThrottleUtil get instance => _instance;
+  Timer? _cleanupTimer;
+  Duration _cleanupInterval = const Duration(minutes: 10);
+  Duration get cleanupInterval => _cleanupInterval;
 
   /// 全局缓存
   final Map<String, ThrottleData<dynamic>> _throttleCache = {};
@@ -17,13 +25,12 @@ class ThrottleUtil {
   final Map<String, DebounceData> _debounceCache = {};
   Map<String, DebounceData> get debounceCache => _debounceCache;
 
-  Timer? _cleanupTimer;
-
-  /// 初始化节流/防抖管理器
-  static void init({Duration cleanupInterval = const Duration(minutes: 10)}) {
-    ThrottleUtil.instance._cleanupTimer?.cancel();
-    ThrottleUtil.instance._cleanupTimer = Timer.periodic(cleanupInterval, (_) {
-      ThrottleUtil.instance._cleanupExpired();
+  /// 设置清理间隔
+  void setCleanupInterval(Duration value) {
+    _cleanupInterval = value;
+    _cleanupTimer?.cancel();
+    _cleanupTimer = Timer.periodic(_cleanupInterval, (_) {
+      _cleanupExpired();
     });
   }
 
