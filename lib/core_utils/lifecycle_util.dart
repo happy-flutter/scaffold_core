@@ -1,32 +1,29 @@
-import 'dart:async';
+import 'package:flutter/widgets.dart';
 
-import 'package:flutter/services.dart';
-
-enum AppLifecycle {
-  /// incative
+enum LifecycleState {
   inactive('AppLifecycleState.inactive', 'inactive', '非活跃'),
-
-  /// paused
   paused('AppLifecycleState.paused', 'paused', '暂停'),
-
-  /// resumed
   resumed('AppLifecycleState.resumed', 'resumed', '恢复'),
-
-  /// detached
-  detached('AppLifecycleState.detached', 'detached', '断开');
+  detached('AppLifecycleState.detached', 'detached', '断开'),
+  hidden('AppLifecycleState.hidden', 'hidden', '隐藏');
 
   final String value;
-
   final String name;
-
   final String description;
 
-  const AppLifecycle(this.value, this.name, this.description);
+  const LifecycleState(this.value, this.name, this.description);
 
-  static AppLifecycle fromValue(String value) {
+  static LifecycleState fromValue(String value) {
     return values.firstWhere(
       (v) => v.value == value,
-      orElse: () => AppLifecycle.detached,
+      orElse: () => LifecycleState.detached,
+    );
+  }
+
+  static LifecycleState fromAppLifecycleState(AppLifecycleState state) {
+    return values.firstWhere(
+      (v) => v.name == state.name,
+      orElse: () => LifecycleState.detached,
     );
   }
 
@@ -36,44 +33,72 @@ enum AppLifecycle {
   }
 }
 
-/// app生命周期管理类
-///
-/// 使用方式：
-/// ```dart
-/// LifecycleUtil.addLifeCycleListener((lifecycle) {
-///   print(lifecycle);
-/// });
-/// ```
-abstract class LifecycleUtil {
+typedef LifecycleChanged = void Function(LifecycleState state);
+typedef AppLifecycleChanged = void Function(AppLifecycleState state);
+
+class LifecycleUtil with WidgetsBindingObserver {
   LifecycleUtil._();
 
-  static StreamController<AppLifecycle>? _lifecycleNotifaction;
+  static final LifecycleUtil _instance = LifecycleUtil._();
+  static final Set<LifecycleChanged> _listeners = {};
+  static final Set<AppLifecycleChanged> _rawListeners = {};
+  static bool _observing = false;
 
-  /// 添加生命周期监听
-  /// [onData] 生命周期回调
-  /// [onError] 错误回调
-  /// [onDone] 完成回调
-  /// [cancelOnError] 是否在错误时取消监听
-  static StreamSubscription addLifeCycleListener(
-    void Function(AppLifecycle)? onData, {
-    Function? onError,
-    void Function()? onDone,
-    bool? cancelOnError,
-  }) {
-    if (_lifecycleNotifaction == null) {
-      _lifecycleNotifaction = StreamController.broadcast();
-      SystemChannels.lifecycle.setMessageHandler((msg) async {
-        AppLifecycle lifecycle = AppLifecycle.fromValue(msg ?? '');
-        _lifecycleNotifaction!.sink.add(lifecycle);
-        return msg;
-      });
+  static bool get observing => _observing;
+  static bool get hasListeners =>
+      _listeners.isNotEmpty || _rawListeners.isNotEmpty;
+
+  static void addLifeCycleListener(LifecycleChanged listener) {
+    _ensureObserver();
+    _listeners.add(listener);
+  }
+
+  static void removeLifeCycleListener(LifecycleChanged listener) {
+    _listeners.remove(listener);
+    _removeObserverIfNeeded();
+  }
+
+  static void addListener(AppLifecycleChanged listener) {
+    _ensureObserver();
+    _rawListeners.add(listener);
+  }
+
+  static void removeListener(AppLifecycleChanged listener) {
+    _rawListeners.remove(listener);
+    _removeObserverIfNeeded();
+  }
+
+  static void clear() {
+    _listeners.clear();
+    _rawListeners.clear();
+    _removeObserver();
+  }
+
+  static void _ensureObserver() {
+    if (_observing) return;
+    WidgetsBinding.instance.addObserver(_instance);
+    _observing = true;
+  }
+
+  static void _removeObserverIfNeeded() {
+    if (hasListeners) return;
+    _removeObserver();
+  }
+
+  static void _removeObserver() {
+    if (!_observing) return;
+    WidgetsBinding.instance.removeObserver(_instance);
+    _observing = false;
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final lifecycleState = LifecycleState.fromAppLifecycleState(state);
+    for (final listener in List<LifecycleChanged>.of(_listeners)) {
+      listener(lifecycleState);
     }
-
-    return _lifecycleNotifaction!.stream.listen(
-      onData,
-      onError: onError,
-      onDone: onDone,
-      cancelOnError: cancelOnError,
-    );
+    for (final listener in List<AppLifecycleChanged>.of(_rawListeners)) {
+      listener(state);
+    }
   }
 }
