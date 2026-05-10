@@ -6,9 +6,15 @@ typedef ReceiveProgress = void Function(int, int);
 /// methods of request
 enum NetworkRequestMethod { get, post, put, delete, patch, head }
 
+@Deprecated('Use UploadRequest instead.')
+typedef UploadRequset = UploadRequest;
+
 /// 可取消对象
 /// 用于取消请求
-class Cancelabel extends CancelToken {}
+class Cancelable extends CancelToken {}
+
+@Deprecated('Use Cancelable instead.')
+typedef Cancelabel = Cancelable;
 
 /// 普通请求对象
 class NetworkRequest {
@@ -34,17 +40,20 @@ class NetworkRequest {
 
   final Map<String, dynamic> extra;
 
-  final Cancelabel? cancelToken;
+  final Cancelable? cancelToken;
 
   final SendProgress? onSendProgress;
   final ReceiveProgress? onReceiveProgress;
 
-  Options get optiopns => Options(
+  Options get options => Options(
     method: method.name,
     contentType: contentType ?? Headers.jsonContentType,
     headers: headers,
     extra: extra,
   );
+
+  @Deprecated('Use options instead.')
+  Options get optiopns => options;
 
   const NetworkRequest(
     this.apiPath, {
@@ -63,30 +72,28 @@ class NetworkRequest {
     RequestOptions options, {
     bool clearHeaders = true,
   }) {
-    RequestOptions retryOptions = options;
-
-    // FormData 需要重建
-    if (options.data is FormData) {
-      final originalFormData = options.data as FormData;
-      final newFormData = FormData();
-      for (final field in originalFormData.fields) {
-        newFormData.fields.add(MapEntry(field.key, field.value));
-      }
-      for (final file in originalFormData.files) {
-        newFormData.files.add(MapEntry(file.key, file.value));
-      }
-      retryOptions = options.copyWith(data: newFormData);
+    dynamic data = options.data;
+    final fields = options.extra['fields'];
+    final filePaths = options.extra['filePaths'];
+    if (filePaths is List) {
+      data = UploadRequest._createFormData(
+        fields: fields is Map<String, dynamic> ? fields : null,
+        filePaths: filePaths.whereType<String>().toList(),
+      );
+    } else if (data is FormData) {
+      data = data.clone();
     }
+
     return NetworkRequest(
-      retryOptions.path,
+      options.path,
       method: NetworkRequestMethod.values.firstWhere(
-        (e) => e.name.toUpperCase() == retryOptions.method.toUpperCase(),
+        (e) => e.name.toUpperCase() == options.method.toUpperCase(),
       ),
-      queryParams: retryOptions.queryParameters,
-      data: retryOptions.data,
-      headers: clearHeaders ? {} : retryOptions.headers,
-      extra: retryOptions.extra,
-      cancelToken: retryOptions.cancelToken as Cancelabel?,
+      queryParams: options.queryParameters,
+      data: data,
+      headers: clearHeaders ? {} : options.headers,
+      extra: options.extra,
+      cancelToken: options.cancelToken as Cancelable?,
     );
   }
 }
@@ -123,8 +130,8 @@ class DownloadRequest extends NetworkRequest {
 ///   await MultipartFile.fromFile('./text1.txt', filename: 'text1.txt'),
 ///   await MultipartFile.fromFile('./text2.txt', filename: 'text2.txt'),
 /// ]});
-class UploadRequset extends NetworkRequest {
-  UploadRequset(
+class UploadRequest extends NetworkRequest {
+  UploadRequest(
     super.apiPath, {
     required List<String> filePaths,
     Map<String, dynamic>? fields,

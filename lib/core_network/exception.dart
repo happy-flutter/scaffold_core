@@ -84,11 +84,13 @@ class NetworkException implements Exception {
       case DioExceptionType.badResponse:
         final response = ex.response;
         final statusCode = response?.statusCode;
-        var msg = response?.data is Map && response?.data['msg'] != null
-            ? response?.data['msg']
-            : response?.data['message'] ?? message;
+        final data = response?.data;
+        final msg =
+            data is Map
+                ? data['msg'] ?? data['message'] ?? message
+                : response?.statusMessage ?? message;
         return NetworkException(
-          msg,
+          msg.toString(),
           NetworkExceptionType.badResponse,
           statusCode: statusCode,
         );

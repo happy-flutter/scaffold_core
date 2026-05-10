@@ -131,9 +131,8 @@ class RetryInterceptor extends Interceptor {
   /// Redirects to [DefaultRetryEvaluator.evaluate]
   ///   with [defaultRetryableStatuses]
   static final FutureOr<bool> Function(DioException error, int attempt)
-  defaultRetryEvaluator = DefaultRetryEvaluator(
-    defaultRetryableStatuses,
-  ).evaluate;
+  defaultRetryEvaluator =
+      DefaultRetryEvaluator(defaultRetryableStatuses).evaluate;
 
   Future<bool> _shouldRetry(DioException error, int attempt) async {
     try {
@@ -235,7 +234,30 @@ class RetryInterceptor extends Interceptor {
 
   RequestOptions _recreateOptions(RequestOptions options) {
     late dynamic data;
-    if (options.data is FormData) {
+    final fields = options.extra['fields'];
+    final filePaths = options.extra['filePaths'];
+    if (filePaths is List) {
+      final formData = FormData();
+      if (fields is Map) {
+        formData.fields.addAll(
+          fields
+              .map((key, value) => MapEntry(key.toString(), value.toString()))
+              .entries,
+        );
+      }
+      if (filePaths.length == 1 && filePaths.first is String) {
+        formData.files.add(
+          MapEntry('file', MultipartFile.fromFileSync(filePaths.first)),
+        );
+      } else if (filePaths.length > 1) {
+        formData.files.addAll(
+          filePaths.whereType<String>().map(
+            (e) => MapEntry('files', MultipartFile.fromFileSync(e)),
+          ),
+        );
+      }
+      data = formData;
+    } else if (options.data is FormData) {
       try {
         data = (options.data as FormData).clone();
       } catch (e) {

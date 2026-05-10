@@ -51,7 +51,7 @@ abstract class LogUtil {
     Object? exception,
     StackTrace? stackTrace,
   }) {
-    talker.warning(message);
+    talker.warning(message, exception, stackTrace);
   }
 
   static void error(
@@ -59,7 +59,7 @@ abstract class LogUtil {
     Object? exception,
     StackTrace? stackTrace,
   }) {
-    talker.error(message);
+    talker.error(message, exception, stackTrace);
   }
 
   static void debug(
@@ -67,7 +67,7 @@ abstract class LogUtil {
     Object? exception,
     StackTrace? stackTrace,
   }) {
-    talker.debug(message);
+    talker.debug(message, exception, stackTrace);
   }
 
   static void log(

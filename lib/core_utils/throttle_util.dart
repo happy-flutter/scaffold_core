@@ -7,10 +7,9 @@ class ThrottleUtil {
   static final ThrottleUtil _instance = ThrottleUtil._internal();
   factory ThrottleUtil() => _instance;
   ThrottleUtil._internal() {
-    if (_cleanupTimer == null)
-      _cleanupTimer = Timer.periodic(cleanupInterval, (_) {
-        _cleanupExpired();
-      });
+    _cleanupTimer ??= Timer.periodic(cleanupInterval, (_) {
+      _cleanupExpired();
+    });
   }
 
   static ThrottleUtil get instance => _instance;

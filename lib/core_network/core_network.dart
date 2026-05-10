@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'interceptors/retry_interceptor.dart';
 import 'package:dio/dio.dart';
-import 'status_codes.dart';
 
 export 'package:dio/dio.dart';
 
@@ -82,7 +81,7 @@ class NetworkClient {
         data: req.data,
         queryParameters: req.queryParams,
         cancelToken: req.cancelToken,
-        options: req.optiopns..disableRetry = !retry,
+        options: req.options..disableRetry = !retry,
         onSendProgress: req.onSendProgress,
         onReceiveProgress: req.onReceiveProgress,
       );
@@ -96,7 +95,7 @@ class NetworkClient {
   }
 
   /// 上传
-  Future<dynamic> upload(UploadRequset req, {bool retry = false}) async =>
+  Future<dynamic> upload(UploadRequest req, {bool retry = false}) async =>
       fetch(req, retry: retry);
 
   /// 下载
@@ -113,7 +112,7 @@ class NetworkClient {
         onReceiveProgress: req.onReceiveProgress,
         cancelToken: req.cancelToken,
         deleteOnError: req.deleteOnError,
-        options: req.optiopns..disableRetry = !retry,
+        options: req.options..disableRetry = !retry,
       );
       return NetworkResponse.fromResponse(response);
     } on DioException catch (e) {
@@ -132,7 +131,7 @@ class NetworkClient {
       data: req.data,
       queryParameters: req.queryParams,
       cancelToken: req.cancelToken,
-      options: req.optiopns,
+      options: req.options,
       onSendProgress: req.onSendProgress,
       onReceiveProgress: req.onReceiveProgress,
     );

@@ -1,4 +1,4 @@
-import 'dart:convert' show utf8;
+import 'dart:convert' show base64Encode, utf8;
 
 import 'package:crypto/crypto.dart';
 import 'package:encrypt_next/encrypt.dart' as encrypt;
@@ -10,22 +10,29 @@ abstract class CryptUtil {
   /// aes加密
   static String aesEncode({required String content, required String key}) {
     final secretKey = encrypt.Key.fromUtf8(key);
-    final encrypter = encrypt.Encrypter(
-      encrypt.AES(secretKey, mode: encrypt.AESMode.ecb),
-    );
-    final encrypted = encrypter.encrypt(content);
+    final iv = encrypt.IV.fromSecureRandom(16);
+    final encrypter = encrypt.Encrypter(encrypt.AES(secretKey));
+    final encrypted = encrypter.encrypt(content, iv: iv);
 
-    return encrypted.base64;
+    return '${base64Encode(iv.bytes)}:${encrypted.base64}';
   }
 
   /// aes解密
   static String aesDecode({required String content, required String key}) {
     final secretKey = encrypt.Key.fromUtf8(key);
-    final encrypter = encrypt.Encrypter(
+    final encrypter = encrypt.Encrypter(encrypt.AES(secretKey));
+    if (content.contains(':')) {
+      final parts = content.split(':');
+      final iv = encrypt.IV.fromBase64(parts.first);
+      return encrypter.decrypt(
+        encrypt.Encrypted.fromBase64(parts.last),
+        iv: iv,
+      );
+    }
+    final legacyEncrypter = encrypt.Encrypter(
       encrypt.AES(secretKey, mode: encrypt.AESMode.ecb, padding: 'PKCS7'),
     );
-    final decrypted = encrypter.decrypt(encrypt.Encrypted.fromBase64(content));
-    return decrypted;
+    return legacyEncrypter.decrypt(encrypt.Encrypted.fromBase64(content));
   }
 
   /// RSA加密算法加密，秘钥格式为[pkcs8]

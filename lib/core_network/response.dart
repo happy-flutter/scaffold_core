@@ -15,8 +15,7 @@ class NetworkResponse {
   Map<String, List<String>> headers;
 
   /// 请求是否成功
-  bool get success =>
-      {status200OK, status201Created, status204NoContent}.contains(code);
+  bool get success => code >= 200 && code < 300;
 
   NetworkResponse(this.code, this.msg, this.headers, {this.data});
 
