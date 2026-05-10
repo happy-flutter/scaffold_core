@@ -10,6 +10,7 @@ part 'request.dart';
 part 'response.dart';
 
 typedef Decoder<T> = T Function(Map<String, dynamic>);
+typedef ResponseDecoder<T> = T Function(dynamic data);
 
 class NetworkClient {
   NetworkClient._() : _dio = Dio();
@@ -71,9 +72,10 @@ class NetworkClient {
   /// 基础请求
   /// [req] 请求体构建对象
   /// [retry] 是否重试
-  Future<NetworkResponse> fetch<T>(
+  Future<NetworkResponse<T>> fetch<T>(
     NetworkRequest req, {
     bool retry = false,
+    ResponseDecoder<T>? decoder,
   }) async {
     try {
       Response response = await dio.request(
@@ -86,7 +88,7 @@ class NetworkClient {
         onReceiveProgress: req.onReceiveProgress,
       );
 
-      return NetworkResponse.fromResponse(response);
+      return NetworkResponse.fromResponse(response, decoder: decoder);
     } on DioException catch (e) {
       throw NetworkException.fromDioException(e);
     } on Error catch (e) {
@@ -95,13 +97,17 @@ class NetworkClient {
   }
 
   /// 上传
-  Future<dynamic> upload(UploadRequest req, {bool retry = false}) async =>
-      fetch(req, retry: retry);
+  Future<NetworkResponse<T>> upload<T>(
+    UploadRequest req, {
+    bool retry = false,
+    ResponseDecoder<T>? decoder,
+  }) async => fetch(req, retry: retry, decoder: decoder);
 
   /// 下载
-  Future<NetworkResponse> download(
+  Future<NetworkResponse<T>> download<T>(
     DownloadRequest req, {
     bool retry = false,
+    ResponseDecoder<T>? decoder,
   }) async {
     try {
       Response response = await dio.download(
@@ -114,7 +120,7 @@ class NetworkClient {
         deleteOnError: req.deleteOnError,
         options: req.options..disableRetry = !retry,
       );
-      return NetworkResponse.fromResponse(response);
+      return NetworkResponse.fromResponse(response, decoder: decoder);
     } on DioException catch (e) {
       throw NetworkException.fromDioException(e);
     } on Error catch (e) {

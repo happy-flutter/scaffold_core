@@ -1,7 +1,7 @@
 part of 'core_network.dart';
 
 /// 请求返回对象
-class NetworkResponse {
+class NetworkResponse<T> {
   /// 返回的状态码
   final int code;
 
@@ -9,22 +9,26 @@ class NetworkResponse {
   final String msg;
 
   /// 返回的数据
-  dynamic data;
+  final T? data;
 
   /// 返回的headers
-  Map<String, List<String>> headers;
+  final Map<String, List<String>> headers;
 
   /// 请求是否成功
   bool get success => code >= 200 && code < 300;
 
   NetworkResponse(this.code, this.msg, this.headers, {this.data});
 
-  factory NetworkResponse.fromResponse(Response response) {
-    return NetworkResponse(
+  factory NetworkResponse.fromResponse(
+    Response response, {
+    ResponseDecoder<T>? decoder,
+  }) {
+    final rawData = response.data;
+    return NetworkResponse<T>(
       response.statusCode ?? -1,
       response.statusMessage ?? 'Unknown',
       response.headers.map,
-      data: response.data,
+      data: decoder == null ? rawData as T? : decoder(rawData),
     );
   }
 
