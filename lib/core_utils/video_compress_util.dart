@@ -91,6 +91,37 @@ class VideoCompressConfig extends VVideoCompressionConfig {
 
 /// 视频压缩进阶配置
 class VideoCompressAdvancedConfig extends VVideoAdvancedConfig {
+  const VideoCompressAdvancedConfig({
+    super.videoBitrate,
+    super.audioBitrate,
+    super.customWidth,
+    super.customHeight,
+    super.frameRate,
+    super.videoCodec,
+    super.audioCodec,
+    super.encodingSpeed,
+    super.crf,
+    super.twoPassEncoding,
+    super.hardwareAcceleration,
+    super.trimStartMs,
+    super.trimEndMs,
+    super.rotation,
+    super.audioSampleRate,
+    super.audioChannels,
+    super.removeAudio,
+    super.autoCorrectOrientation,
+    super.brightness,
+    super.contrast,
+    super.saturation,
+    super.variableBitrate,
+    super.keyframeInterval,
+    super.bFrames,
+    super.reducedFrameRate,
+    super.aggressiveCompression,
+    super.noiseReduction,
+    super.monoAudio,
+    super.dimensionHandling,
+  });
   // final advancedConfig = VVideoAdvancedConfig(
   //   // Resolution & Quality
   //   customWidth: 1280,
@@ -121,19 +152,56 @@ class VideoCompressAdvancedConfig extends VVideoAdvancedConfig {
   factory VideoCompressAdvancedConfig.maxCompression({
     int? targetBitrate,
     bool keepAudio = false,
-  }) =>
-      VVideoAdvancedConfig.maximumCompression(
-            targetBitrate: targetBitrate,
-            keepAudio: keepAudio,
-          )
-          as VideoCompressAdvancedConfig;
+  }) {
+    final config = VVideoAdvancedConfig.maximumCompression(
+      targetBitrate: targetBitrate,
+      keepAudio: keepAudio,
+    );
+    return VideoCompressAdvancedConfig.fromConfig(config);
+  }
 
-  factory VideoCompressAdvancedConfig.socialMediaOptimized() =>
-      VVideoAdvancedConfig.socialMediaOptimized()
-          as VideoCompressAdvancedConfig;
+  factory VideoCompressAdvancedConfig.socialMediaOptimized() {
+    final config = VVideoAdvancedConfig.socialMediaOptimized();
+    return VideoCompressAdvancedConfig.fromConfig(config);
+  }
 
-  factory VideoCompressAdvancedConfig.mobileOptimized() =>
-      VVideoAdvancedConfig.mobileOptimized() as VideoCompressAdvancedConfig;
+  factory VideoCompressAdvancedConfig.mobileOptimized() {
+    final config = VVideoAdvancedConfig.mobileOptimized();
+    return VideoCompressAdvancedConfig.fromConfig(config);
+  }
+
+  factory VideoCompressAdvancedConfig.fromConfig(VVideoAdvancedConfig config) =>
+      VideoCompressAdvancedConfig(
+        videoBitrate: config.videoBitrate,
+        audioBitrate: config.audioBitrate,
+        customWidth: config.customWidth,
+        customHeight: config.customHeight,
+        frameRate: config.frameRate,
+        videoCodec: config.videoCodec,
+        audioCodec: config.audioCodec,
+        encodingSpeed: config.encodingSpeed,
+        crf: config.crf,
+        twoPassEncoding: config.twoPassEncoding,
+        hardwareAcceleration: config.hardwareAcceleration,
+        trimStartMs: config.trimStartMs,
+        trimEndMs: config.trimEndMs,
+        rotation: config.rotation,
+        audioSampleRate: config.audioSampleRate,
+        audioChannels: config.audioChannels,
+        removeAudio: config.removeAudio,
+        autoCorrectOrientation: config.autoCorrectOrientation,
+        brightness: config.brightness,
+        contrast: config.contrast,
+        saturation: config.saturation,
+        variableBitrate: config.variableBitrate,
+        keyframeInterval: config.keyframeInterval,
+        bFrames: config.bFrames,
+        reducedFrameRate: config.reducedFrameRate,
+        aggressiveCompression: config.aggressiveCompression,
+        noiseReduction: config.noiseReduction,
+        monoAudio: config.monoAudio,
+        dimensionHandling: config.dimensionHandling,
+      );
 }
 
 /// 视频压缩结果

@@ -80,7 +80,7 @@ class NetworkRequest {
     return NetworkRequest(
       retryOptions.path,
       method: NetworkRequestMethod.values.firstWhere(
-        (e) => e.name == retryOptions.method,
+        (e) => e.name.toUpperCase() == retryOptions.method.toUpperCase(),
       ),
       queryParams: retryOptions.queryParameters,
       data: retryOptions.data,

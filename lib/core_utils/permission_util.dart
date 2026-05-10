@@ -3,10 +3,10 @@ import 'package:permission_handler/permission_handler.dart';
 /// 系统服务状态
 enum ServiceStatusType {
   /// The service for the permission is disabled.
-  disabled(ServiceStatus.disabled, 'disabled', '已开启'),
+  disabled(ServiceStatus.disabled, 'disabled', '关闭'),
 
   /// The service for the permission is enabled.
-  enabled(ServiceStatus.enabled, 'enabled', '关闭'),
+  enabled(ServiceStatus.enabled, 'enabled', '已开启'),
 
   /// The permission does not have an associated service on the current
   /// platform.
@@ -144,13 +144,11 @@ enum PermissionType {
 }
 
 extension PermissionTypeExtension on PermissionType {
-
   Future<PermissionStatusType> request() async =>
       await PermissionUtil.requestPermission(this);
 
   Future<ServiceStatusType> serviceStatus() async =>
       await PermissionUtil.checkServiceStatus(this);
-
 }
 
 /// 权限工具类
@@ -176,10 +174,8 @@ abstract class PermissionUtil {
   /// 批量请求权限
   static Future<Map<PermissionType, PermissionStatusType>>
   requestPermissionList(List<PermissionType> permissonTypeList) async {
-    Map<Permission, PermissionStatus> res = await permissonTypeList
-        .map((e) => e.rawType)
-        .toList()
-        .request();
+    Map<Permission, PermissionStatus> res =
+        await permissonTypeList.map((e) => e.rawType).toList().request();
 
     return res.map(
       (key, value) => MapEntry(
@@ -193,8 +189,11 @@ abstract class PermissionUtil {
   static Future<ServiceStatusType> checkServiceStatus(
     PermissionType permissonType,
   ) async {
-    ServiceStatus status =
-        await (permissonType.rawType as PermissionWithService).serviceStatus;
+    final permission = permissonType.rawType;
+    if (permission is! PermissionWithService) {
+      return ServiceStatusType.notApplicable;
+    }
+    ServiceStatus status = await permission.serviceStatus;
     return ServiceStatusType.fromRawType(status);
   }
 

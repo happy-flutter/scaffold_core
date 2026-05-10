@@ -68,7 +68,7 @@ abstract class AssetsPickerUtil {
         enableRecording: canRecording,
         onlyEnableRecording: onlyEnableRecording,
         shouldDeletePreviewFile: shouldDeletePreviewFile,
-        enableAudio: false,
+        enableAudio: enableAudio,
         maximumRecordingDuration: maximumRecordingDuration,
         resolutionPreset: resolutionPreset.resolutionPreset,
         imageFormatGroup: ImageFormatGroup.jpeg,
@@ -77,8 +77,11 @@ abstract class AssetsPickerUtil {
       ),
     );
 
-    /// 输出图片
-    return entity?.file;
+    File? file = await entity?.file;
+    if (file != null) {
+      onCaptured?.call([file]);
+    }
+    return file;
   }
 
   /// 从相册获取

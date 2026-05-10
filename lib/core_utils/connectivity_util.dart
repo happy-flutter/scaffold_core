@@ -57,7 +57,7 @@ class ConnectivityUtil {
   static StreamController<ConnectivityStatus>? _connectivityController;
 
   static StreamController<ConnectivityStatus> get connectivityController =>
-      _connectivityController ?? _init();
+      _connectivityController ??= _init();
 
   static StreamController<ConnectivityStatus> _init() {
     return StreamController.broadcast();

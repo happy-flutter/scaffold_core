@@ -68,7 +68,7 @@ abstract class CryptUtil {
     // 如果已经是PEM格式的秘钥，直接返回
     if (str.contains(begin) && str.contains(end)) return str;
     // 去掉空格和换行
-    str.replaceAll(' ', '').replaceAll('\n', '');
+    str = str.replaceAll(' ', '').replaceAll('\n', '');
 
     int splitCount = str.length ~/ 64;
     List<String> strList = [];
